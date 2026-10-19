@@ -11,11 +11,17 @@ ai_model=os.getenv("MODEL") or "qwen3.5"
 if not ai_model:
     raise ValueError("Set the MODEL environment variable to a model name.")
 
-chat_context = [{
+chat_context = [
+    {
     "role": "system",
-     "content": "You are a helpful assistant. Remember relevant details from this conversation." 
+     "content": "You are a helpful assistant. \
+                Remember relevant details from this conversation. \
+                Explain concepts clearly with real life examples."                 
      }
 ]
+banner = f"{'=' * 40} \nAI Assitant\n{'=' * 40} \n"
+print(banner)
+
 exit_list = ["q", "quit", "exit", "bye"]
 
 while True:
@@ -35,12 +41,18 @@ while True:
         messages= chat_context 
             
     )
-    assistant_text = response.choices[0].message.content
+    ai_response = response.choices[0].message.content
+    print(f"\nAssistant: {ai_response}")
 
     chat_context.append(
         {
         "role": "assistant",
-        "content": assistant_text
+        "content": ai_response
         }
     )
-    print(f"\nAssistant: {assistant_text}")
+    # Code snippet to print full conversation history.
+    # print(f"{'=' * 20}Conversation History{'=' * 20}")
+    # for chat in chat_context:
+    #     print(f"Role: {chat['role'].title()}\nContent: {chat['content']}")
+    # print(f"{'=' * 60}")
+    
