@@ -1,7 +1,8 @@
 from litellm import completion
-import os
 from dotenv import load_dotenv  
-import os, sys
+import os
+from tools import generate_password, get_time, roll_dice
+
 
 load_dotenv()
 # Setting the LLM parameters 
@@ -11,7 +12,7 @@ ai_model=os.getenv("MODEL") or "qwen3.5"
 brave_mcp_url = os.getenv("BRAVE_SEARCH_MCP_URL")
 if not ai_model:
     raise ValueError("Set the MODEL environment variable to a model name.")
-
+#MCP tools section
 search_tools=[
         {
             "type": "mcp",
