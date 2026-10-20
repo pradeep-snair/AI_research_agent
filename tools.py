@@ -5,10 +5,8 @@ import string
 import secrets 
 
 from datetime import datetime
-print(datetime.now().strftime("%d-%m-%y %I:%M:%S %p"))
 from random import randint
 import secrets 
-print(randint(1,6))
 import string 
 
 def get_time():

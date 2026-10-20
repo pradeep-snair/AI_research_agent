@@ -1,8 +1,7 @@
 from litellm import completion
 from dotenv import load_dotenv  
 import os
-from tools import generate_password, get_time, roll_dice
-
+from tools_manager import execute_tool
 
 load_dotenv()
 # Setting the LLM parameters 
@@ -39,8 +38,12 @@ exit_list = ["q", "quit", "exit", "bye"]
 
 while True:
     user_text = input("Hi!, how can I help: ").strip()
+    tool_result = execute_tool(user_text)
     if user_text.lower() in exit_list:
         break
+    if tool_result:
+        print(f"Tool: {tool_result}")
+        continue
     chat_context.append(
         {
         "role": "user",
