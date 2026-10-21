@@ -2,6 +2,7 @@ from litellm import completion
 from dotenv import load_dotenv  
 import os
 from tools_manager import execute_tool
+from ai_system_role import display_select_ai_roles
 
 load_dotenv()
 # Setting the LLM parameters 
@@ -21,14 +22,13 @@ search_tools=[
             "allowed_tools": ["brave_web_search"],
         }
     ]
-
+# Give user the option to select system prompt.
+system_prompt = display_select_ai_roles()
 
 chat_context = [
     {
     "role": "system",
-     "content": "You are a helpful assistant. \
-                Remember relevant details from this conversation. \
-                Explain concepts clearly with real life examples."                 
+    "content": system_prompt             
      }
 ]
 banner = f"{'=' * 40} \nAI Assitant\n{'=' * 40} \n"
@@ -38,11 +38,11 @@ exit_list = ["q", "quit", "exit", "bye"]
 
 while True:
     user_text = input("Hi!, how can I help: ").strip()
-    tool_result = execute_tool(user_text)
     if user_text.lower() in exit_list:
         break
+    tool_result = execute_tool(user_text)
     if tool_result:
-        print(f"Tool: {tool_result}")
+        print(f"User Tool: {tool_result}")
         continue
     chat_context.append(
         {
@@ -60,7 +60,7 @@ while True:
             
     )
     ai_response = response.choices[0].message.content
-    print(f"\nAssistant: {ai_response}")
+    print(f"Assistant: {ai_response}")
 
     chat_context.append(
         {
