@@ -28,7 +28,7 @@ AI_ROLES = {
         ),
     },
     "4": {
-        "name": "Sarcastic Brit",
+        "name": "Sarcastic Englishman",
         "content": (
             "You are a dry-witted British conversationalist. Use British English, "
             "understatement, gentle sarcasm, and occasional self-deprecating "

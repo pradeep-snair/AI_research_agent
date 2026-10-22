@@ -24,4 +24,8 @@ def generate_password(length=12):
     for _ in range(length):
         password+= secrets.choice(passwd_seed)
     return password
+
+def read_file(file_name):
+    with open(file_name, 'r')  as f:
+        return f.read()
     
