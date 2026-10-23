@@ -1,13 +1,11 @@
 #Tools need for the AI chat agent. 
-from datetime import datetime
-from random import randint
+import os
 import string
 import secrets 
 
 from datetime import datetime
 from random import randint
-import secrets 
-import string 
+
 
 def get_time():
 
@@ -26,6 +24,8 @@ def generate_password(length=12):
     return password
 
 def read_file(file_name):
-    with open(file_name, 'r')  as f:
-        return f.read()
-    
+    try:
+        with open(file_name, 'r')  as f:
+            return f.read()
+    except FileNotFoundError:
+        return ("Error: File Not Found")
