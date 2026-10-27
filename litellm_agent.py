@@ -1,18 +1,15 @@
 from litellm import completion
-from dotenv import load_dotenv  
-import os
 from tools_manager import execute_tool
 from ai_system_role import display_select_ai_roles
-from process_embeddings import create_dataset_embeddings, cosine_similiarity
+from process_embeddings import create_dataset_embeddings, cosine_similiarity, create_embeddings
 
-load_dotenv()
-# Setting the LLM parameters 
-ai_base_url=os.getenv("BASE_URL")
-ai_api_key=os.getenv("API_KEY")
-ai_model=os.getenv("MODEL") or "qwen3.5"
-brave_mcp_url = os.getenv("BRAVE_SEARCH_MCP_URL")
-if not ai_model:
-    raise ValueError("Set the MODEL environment variable to a model name.")
+
+from config import (
+    BASE_URL as ai_base_url,
+    API_KEY as ai_api_key,
+    MODEL as ai_model,
+    BRAVE_SEARCH_MCP_URL as brave_mcp_url,
+)
 #MCP tools section
 search_tools=[
         {
@@ -25,9 +22,8 @@ search_tools=[
     ]
 # Give user the option to select system prompt.
 # Creat the dataset emedding first
-create_dataset_embeddings()
+RAG_embeddings = create_dataset_embeddings()
 system_prompt = display_select_ai_roles()
-
 chat_context = [
     {
     "role": "system",
@@ -52,7 +48,17 @@ while True:
         "role": "user",
         "content": user_text,
         }
-    ) 
+    )
+
+    user_text_embedding = create_embeddings(user_text)
+    similiarity = -1
+    matching_file = ''
+    print(type(RAG_embeddings))
+    for file_name, vector in RAG_embeddings.items():
+        similiarity_value = cosine_similiarity(user_text_embedding, vector)
+        if similiarity_value > similiarity:
+            matching_file = file_name
+    print(f"Matching file from RAG Dataset is {matching_file}")
     response = completion(
         model=ai_model,
         api_key=ai_api_key,

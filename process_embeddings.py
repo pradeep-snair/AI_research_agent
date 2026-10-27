@@ -1,19 +1,15 @@
 from openai import OpenAI
-from dotenv import load_dotenv
-import os
 import numpy as np
 from litellm import embedding
-from pathlib import Path
 import tools
 from tools_manager import execute_tool
 
-load_dotenv()
-
-# ollama_base_url = os.getenv("OLLAMA_BASE_URL")
-data_folder_path = Path(os.getenv("DATA_FOLDER_PATH"))
-ai_base_url=os.getenv("BASE_URL")
-ai_api_key=os.getenv("API_KEY")
-ai_embedding_model=os.getenv("EMBEDDING_MODEL")
+from config import (
+    BASE_URL as ai_base_url,
+    API_KEY as ai_api_key,
+    EMBEDDING_MODEL as ai_embedding_model,
+    DATA_FOLDER_PATH as data_folder_path,
+)
 
 def create_embeddings(input_data:str):
     """ function to create embedding for input data"""
@@ -39,7 +35,6 @@ def create_embeddings(input_data:str):
 def create_dataset_embeddings():
     """ function to create embedding for whole dataset in data dictionary"""
     files = [f for f in data_folder_path.iterdir() if f.is_file()]
-    print(f"files are {files}")
     dataset_embeddings = {}
     for file in files:
         file_content = tools.read_file(file)
