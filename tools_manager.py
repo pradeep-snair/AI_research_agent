@@ -1,7 +1,8 @@
 from tools import (
     generate_password, 
     get_time,
-    roll_dice
+    roll_dice,
+    read_file
 )
 
 def execute_tool(user_input):

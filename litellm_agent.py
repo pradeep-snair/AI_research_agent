@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 import os
 from tools_manager import execute_tool
 from ai_system_role import display_select_ai_roles
+from process_embeddings import create_dataset_embeddings, cosine_similiarity
 
 load_dotenv()
 # Setting the LLM parameters 
@@ -23,6 +24,8 @@ search_tools=[
         }
     ]
 # Give user the option to select system prompt.
+# Creat the dataset emedding first
+create_dataset_embeddings()
 system_prompt = display_select_ai_roles()
 
 chat_context = [
